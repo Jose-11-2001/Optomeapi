@@ -1,5 +1,5 @@
-// config/JwtConfig.java
-package com.optometry.config;
+
+package com.example.Optomeapi.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
