@@ -1,5 +1,7 @@
 package com.example.Optomeapi.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "experiences")
-@Data
+@Getter @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,9 +1,8 @@
 package com.example.Optomeapi.enums;
 
 public enum NotificationType {
-    APPOINTMNT,
+    APPOINTMENT,
     MESSAGE,
     MEDICAL,
     SYSTEM
-
 }

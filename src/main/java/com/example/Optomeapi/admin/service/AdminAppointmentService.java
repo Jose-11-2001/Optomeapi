@@ -3,7 +3,7 @@ package com.example.Optomeapi.admin.service;
 import com.example.Optomeapi.admin.dto.request.AllocateAppointmentRequest;
 import com.example.Optomeapi.dto.response.AppointmentResponse;
 import com.example.Optomeapi.entity.Appointment;
-import com.example.Optomeapi.entity.AppointmentStatus;
+import com.example.Optomeapi.enums.AppointmentStatus;
 import com.example.Optomeapi.entity.Doctor;
 import com.example.Optomeapi.exception.ApiException;
 import com.example.Optomeapi.repository.AppointmentRepository;

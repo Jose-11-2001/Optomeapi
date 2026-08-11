@@ -1,9 +1,12 @@
 package com.example.Optomeapi.dto.response;
-import com.example.Optomeapi.enums.Role;
-import lombok.Builder;  
+
+import com.example.Optomeapi.entity.Medication;
+import lombok.Builder;
 import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.List;
+
 @Data
 @Builder
 public class PrescriptionResponse {
@@ -11,7 +14,8 @@ public class PrescriptionResponse {
     private Long doctorId;
     private String doctorName;
     private LocalDate date;
-    private List<String> medications;
+    private List<Medication> medications;
+    private String diagnosis;
     private String notes;
     private boolean isActive;
 }

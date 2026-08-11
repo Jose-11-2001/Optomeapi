@@ -1,5 +1,7 @@
 package com.example.Optomeapi.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "signs")
-@Data
+@Getter @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

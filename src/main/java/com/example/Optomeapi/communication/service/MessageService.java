@@ -1,5 +1,6 @@
 package com.example.Optomeapi.communication.service;
 
+import com.example.Optomeapi.dto.response.UserResponse;
 import com.example.Optomeapi.communication.dto.request.SendMessageRequest;
 import com.example.Optomeapi.communication.dto.response.ConversationResponse;
 import com.example.Optomeapi.communication.dto.response.MessageResponse;
@@ -10,7 +11,7 @@ import com.example.Optomeapi.exception.ApiException;
 import com.example.Optomeapi.repository.ConversationRepository;
 import com.example.Optomeapi.repository.MessageRepository;
 import com.example.Optomeapi.repository.UserRepository;
-import com.example.Optomeapi.service.NotificationService;
+import com.example.Optomeapi.communication.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

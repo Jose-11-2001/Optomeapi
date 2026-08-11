@@ -1,9 +1,9 @@
 package com.example.Optomeapi.entity;
 
+import com.example.Optomeapi.enums.Severity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -11,10 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "diseases")
-@Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Disease {
 
     @Id
@@ -24,7 +23,7 @@ public class Disease {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(length = 5000)
+    @Column(length = 2000)
     private String description;
 
     @ManyToMany
@@ -51,4 +50,24 @@ public class Disease {
 
     @ElementCollection
     private List<String> riskFactors = new ArrayList<>();
+
+    // GETTERS
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public List<Symptom> getSymptoms() { return symptoms; }
+    public List<Sign> getSigns() { return signs; }
+    public Severity getSeverity() { return severity; }
+    public String getTreatment() { return treatment; }
+    public List<String> getRiskFactors() { return riskFactors; }
+
+    // SETTERS
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setDescription(String description) { this.description = description; }
+    public void setSymptoms(List<Symptom> symptoms) { this.symptoms = symptoms; }
+    public void setSigns(List<Sign> signs) { this.signs = signs; }
+    public void setSeverity(Severity severity) { this.severity = severity; }
+    public void setTreatment(String treatment) { this.treatment = treatment; }
+    public void setRiskFactors(List<String> riskFactors) { this.riskFactors = riskFactors; }
 }

@@ -5,8 +5,9 @@ import com.example.Optomeapi.communication.dto.response.NotificationPreferenceRe
 import com.example.Optomeapi.communication.dto.response.NotificationResponse;
 import com.example.Optomeapi.entity.Notification;
 import com.example.Optomeapi.entity.NotificationPreference;
-import com.example.Optomeapi.entity.NotificationType;
+import com.example.Optomeapi.enums.NotificationType;
 import com.example.Optomeapi.entity.User;
+import com.example.Optomeapi.entity.Message;
 import com.example.Optomeapi.exception.ApiException;
 import com.example.Optomeapi.repository.NotificationPreferenceRepository;
 import com.example.Optomeapi.repository.NotificationRepository;
@@ -78,6 +79,24 @@ public class NotificationService {
         
         NotificationPreference updated = preferenceRepository.save(preference);
         return mapToPreferenceResponse(updated);
+    }
+
+    @Transactional
+    public void sendMessageNotification(Message message) {
+        String content = "New message from " + message.getSender().getFirstName() + ": " + message.getText();
+        createNotification(message.getReceiver(), NotificationType.MESSAGE, "New Message", content);
+    }
+
+    @Transactional
+    public void createNotification(User user, NotificationType type, String title, String message) {
+        Notification notification = Notification.builder()
+            .user(user)
+            .type(type)
+            .title(title)
+            .message(message)
+            .isRead(false)
+            .build();
+        notificationRepository.save(notification);
     }
 
     private NotificationPreference createDefaultPreferences(Long userId) {

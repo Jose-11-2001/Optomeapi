@@ -1,5 +1,6 @@
 package com.example.Optomeapi.service;
 
+import com.example.Optomeapi.doctor.dto.request.SymptomRequest;
 import com.example.Optomeapi.dto.response.SymptomResponse;
 import com.example.Optomeapi.entity.Symptom;
 import com.example.Optomeapi.exception.ApiException;
@@ -27,6 +28,34 @@ public class SymptomService {
         Symptom symptom = symptomRepository.findById(id)
             .orElseThrow(() -> new ApiException("Symptom not found", HttpStatus.NOT_FOUND));
         return mapToResponse(symptom);
+    }
+
+    public SymptomResponse createSymptom(SymptomRequest request) {
+        Symptom symptom = Symptom.builder()
+            .name(request.getName())
+            .description(request.getDescription())
+            .type(request.getType())
+            .commonCauses(request.getCommonCauses())
+            .build();
+        Symptom saved = symptomRepository.save(symptom);
+        return mapToResponse(saved);
+    }
+
+    public SymptomResponse updateSymptom(Long id, SymptomRequest request) {
+        Symptom symptom = symptomRepository.findById(id)
+            .orElseThrow(() -> new ApiException("Symptom not found", HttpStatus.NOT_FOUND));
+        if (request.getName() != null) symptom.setName(request.getName());
+        if (request.getDescription() != null) symptom.setDescription(request.getDescription());
+        if (request.getType() != null) symptom.setType(request.getType());
+        if (request.getCommonCauses() != null) symptom.setCommonCauses(request.getCommonCauses());
+        Symptom updated = symptomRepository.save(symptom);
+        return mapToResponse(updated);
+    }
+
+    public void deleteSymptom(Long id) {
+        Symptom symptom = symptomRepository.findById(id)
+            .orElseThrow(() -> new ApiException("Symptom not found", HttpStatus.NOT_FOUND));
+        symptomRepository.delete(symptom);
     }
 
     private SymptomResponse mapToResponse(Symptom symptom) {

@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DoctorController {
 
-    private final DoctorService doctorService;
+    private final com.example.Optomeapi.doctor.service.DoctorService doctorService;
     private final DoctorAppointmentService appointmentService;
     private final DiseaseService diseaseService;
     private final SymptomService symptomService;

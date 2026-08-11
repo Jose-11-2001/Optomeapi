@@ -1,5 +1,7 @@
 package com.example.Optomeapi.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
-@Data
+@Getter @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

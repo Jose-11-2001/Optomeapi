@@ -1,13 +1,17 @@
-package com.example.Optomeapi.service;
+package com.example.Optomeapi.doctor.service;
 
-import com.example.Optomeapi.dto.request.*;
-import com.example.Optomeapi.dto.response.DoctorProfileResponse;
-import com.example.Optomeapi.entity.*;
+import com.example.Optomeapi.doctor.dto.request.DoctorProfileRequest;
+import com.example.Optomeapi.doctor.dto.request.ExperienceRequest;
+import com.example.Optomeapi.doctor.dto.request.QualificationRequest;
+import com.example.Optomeapi.doctor.dto.request.ScheduleRequest;
+import com.example.Optomeapi.doctor.dto.response.DoctorProfileResponse;
+import com.example.Optomeapi.entity.Doctor;
+import com.example.Optomeapi.entity.Experience;
+import com.example.Optomeapi.entity.Qualification;
+import com.example.Optomeapi.entity.Schedule;
+import com.example.Optomeapi.entity.User;
 import com.example.Optomeapi.exception.ApiException;
 import com.example.Optomeapi.repository.DoctorRepository;
-import com.example.Optomeapi.repository.QualificationRepository;
-import com.example.Optomeapi.repository.ExperienceRepository;
-import com.example.Optomeapi.repository.ScheduleRepository;
 import com.example.Optomeapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
