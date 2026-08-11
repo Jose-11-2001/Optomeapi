@@ -1,6 +1,6 @@
 package com.example.Optomeapi.dto.response;
 
-import com.example.Optomeapi.enum.Role;
+import com.example.Optomeapi.enums.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,4 +18,3 @@ public class UserResponse {
     private boolean isActive;
     private LocalDateTime createdAt;
 }
-

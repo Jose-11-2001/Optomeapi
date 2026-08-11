@@ -1,6 +1,6 @@
 package com.example.Optomeapi.dto.response;
 
-import com.Optomeapi.enum.AppointmentStutus;
+import com.example.Optomeapi.enums.AppointmentStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,4 +23,3 @@ public class AppointmentResponse {
     private String notes;
     private LocalDateTime createdAt;
 }
-

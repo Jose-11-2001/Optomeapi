@@ -1,7 +1,7 @@
 package com.example.Optomeapi.repository;
 
 import com.example.Optomeapi.entity.User;
-import com.example.Optomeapi.enum.Role;
+import com.example.Optomeapi.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

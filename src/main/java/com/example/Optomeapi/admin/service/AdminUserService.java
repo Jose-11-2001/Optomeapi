@@ -2,7 +2,7 @@ package com.example.Optomeapi.admin.service;
 
 import com.example.Optomeapi.dto.response.UserResponse;
 import com.example.Optomeapi.entity.User;
-import com.example.Optomeapi.enum.Role;
+import com.example.Optomeapi.enums.Role;
 import com.example.Optomeapi.exception.ApiException;
 import com.example.Optomeapi.repository.UserRepository;
 import com.example.Optomeapi.service.UserService;

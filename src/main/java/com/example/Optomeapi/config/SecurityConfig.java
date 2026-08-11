@@ -1,6 +1,6 @@
 package com.example.Optomeapi.config;
 
-import com.example.Optomeapi.Security.JwtAuthenticationFilter;
+import com.example.Optomeapi.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,27 +34,15 @@ public class SecurityConfig {
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(auth -> auth
-                // Public endpoints
                 .requestMatchers("/api/register", "/api/login").permitAll()
                 .requestMatchers("/api/swagger.json", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                
-                // Patient endpoints (will be handled by other developer)
-                .requestMatchers("/api/patient/**").hasRole("PATIENT")
-                
-                // Doctor endpoints
+                //.requestMatchers("/api/patient/**").hasRole("PATIENT")
                 .requestMatchers("/api/doctor/**").hasRole("DOCTOR")
-                
-                // Admin endpoints
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                
-                // Communication endpoints
                 .requestMatchers("/api/notifications/**").authenticated()
                 .requestMatchers("/api/messages/**").authenticated()
-                
-                // User endpoints
                 .requestMatchers("/api/user").authenticated()
                 .requestMatchers("/api/logout").authenticated()
-                
                 .anyRequest().authenticated()
             );
 

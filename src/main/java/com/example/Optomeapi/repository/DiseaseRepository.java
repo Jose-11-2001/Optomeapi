@@ -1,7 +1,7 @@
 package com.example.Optomeapi.repository;
 
 import com.example.Optomeapi.entity.Disease;
-import com.example.Optomeapi.enum.Severity;
+import com.example.Optomeapi.enums.Severity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

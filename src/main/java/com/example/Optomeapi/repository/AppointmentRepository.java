@@ -1,7 +1,7 @@
 package com.example.Optomeapi.repository;
 
 import com.example.Optomeapi.entity.Appointment;
-import com.example.Optomeapi.enum.AppointmentStatus;
+import com.example.Optomeapi.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.example.Optomeapi.dto.request;
-import com.example.Optomeapi.enum.Role;
 
+import com.example.Optomeapi.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

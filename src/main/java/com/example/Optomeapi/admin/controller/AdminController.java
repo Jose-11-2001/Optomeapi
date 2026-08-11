@@ -10,8 +10,8 @@ import com.example.Optomeapi.admin.service.AdminService;
 import com.example.Optomeapi.admin.service.AdminUserService;
 import com.example.Optomeapi.dto.response.AppointmentResponse;
 import com.example.Optomeapi.dto.response.UserResponse;
-import com.example.Optomeapi.enum.AppointmentStatus;
-import com.example.Optomeapi.enum.Role;
+import com.example.Optomeapi.enums.AppointmentStatus;
+import com.example.Optomeapi.enums.Role;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,7 +30,8 @@ public class AdminController {
     private final AdminAppointmentService adminAppointmentService;
     private final AdminUserService adminUserService;
 
-    // Doctor management
+    // ============ DOCTOR MANAGEMENT ============
+    
     @GetMapping("/doctors")
     public ResponseEntity<List<DoctorManagementResponse>> getAllDoctors() {
         return ResponseEntity.ok(adminService.getAllDoctors());
@@ -76,7 +77,8 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    // Appointment management
+    // ============ APPOINTMENT MANAGEMENT ============
+    
     @GetMapping("/appointments")
     public ResponseEntity<List<AppointmentResponse>> getAllAppointments(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
@@ -103,7 +105,8 @@ public class AdminController {
         return ResponseEntity.ok(adminAppointmentService.allocateAppointment(id, request));
     }
 
-    // User management
+    // ============ USER MANAGEMENT ============
+    
     @GetMapping("/users")
     public ResponseEntity<List<UserResponse>> getAllUsers(
             @RequestParam(required = false) Role role,
