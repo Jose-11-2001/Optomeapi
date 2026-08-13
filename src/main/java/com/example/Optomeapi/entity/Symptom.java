@@ -1,23 +1,16 @@
 package com.example.Optomeapi.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "symptoms")
-@Getter @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class Symptom {
 
     @Id
@@ -28,7 +21,6 @@ public class Symptom {
     private String name;
 
     private String description;
-
     private String type;
 
     @ElementCollection
@@ -36,4 +28,6 @@ public class Symptom {
 
     @ManyToMany(mappedBy = "symptoms")
     private List<Disease> diseases = new ArrayList<>();
+
+    public Symptom() {}
 }

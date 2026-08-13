@@ -89,13 +89,12 @@ public class NotificationService {
 
     @Transactional
     public void createNotification(User user, NotificationType type, String title, String message) {
-        Notification notification = Notification.builder()
-            .user(user)
-            .type(type)
-            .title(title)
-            .message(message)
-            .isRead(false)
-            .build();
+        Notification notification = new Notification();
+        notification.setUser(user);
+        notification.setType(type);
+        notification.setTitle(title);
+        notification.setMessage(message);
+        notification.setRead(false);
         notificationRepository.save(notification);
     }
 
@@ -103,34 +102,33 @@ public class NotificationService {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
         
-        NotificationPreference preference = NotificationPreference.builder()
-            .user(user)
-            .email(true)
-            .sms(false)
-            .appointmentReminders(true)
-            .promotions(false)
-            .build();
+        NotificationPreference preference = new NotificationPreference();
+        preference.setUser(user);
+        preference.setEmail(true);
+        preference.setSms(false);
+        preference.setAppointmentReminders(true);
+        preference.setPromotions(false);
         
         return preferenceRepository.save(preference);
     }
 
     private NotificationResponse mapToResponse(Notification notification) {
-        return NotificationResponse.builder()
-            .id(notification.getId())
-            .type(notification.getType())
-            .title(notification.getTitle())
-            .message(notification.getMessage())
-            .isRead(notification.isRead())
-            .createdAt(notification.getCreatedAt())
-            .build();
+        NotificationResponse response = new NotificationResponse();
+        response.setId(notification.getId());
+        response.setType(notification.getType());
+        response.setTitle(notification.getTitle());
+        response.setMessage(notification.getMessage());
+        response.setRead(notification.isRead());
+        response.setCreatedAt(notification.getCreatedAt());
+        return response;
     }
 
     private NotificationPreferenceResponse mapToPreferenceResponse(NotificationPreference preference) {
-        return NotificationPreferenceResponse.builder()
-            .email(preference.isEmail())
-            .sms(preference.isSms())
-            .appointmentReminders(preference.isAppointmentReminders())
-            .promotions(preference.isPromotions())
-            .build();
+        NotificationPreferenceResponse response = new NotificationPreferenceResponse();
+        response.setEmail(preference.isEmail());
+        response.setSms(preference.isSms());
+        response.setAppointmentReminders(preference.isAppointmentReminders());
+        response.setPromotions(preference.isPromotions());
+        return response;
     }
 }

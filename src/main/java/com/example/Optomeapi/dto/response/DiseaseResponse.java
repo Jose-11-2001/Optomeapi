@@ -1,13 +1,17 @@
 package com.example.Optomeapi.dto.response;
 
 import com.example.Optomeapi.enums.Severity;
-import lombok.Builder;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
-@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DiseaseResponse {
     private Long id;
     private String name;

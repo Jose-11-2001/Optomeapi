@@ -1,5 +1,6 @@
 package com.example.Optomeapi.controller;
-
+import com.example.Optomeapi.doctor.service.DoctorAppointmentService;
+import com.example.Optomeapi.doctor.service.DiseaseService;
 import com.example.Optomeapi.doctor.dto.request.*;
 import com.example.Optomeapi.doctor.dto.response.DoctorProfileResponse;
 import com.example.Optomeapi.dto.response.AppointmentResponse;

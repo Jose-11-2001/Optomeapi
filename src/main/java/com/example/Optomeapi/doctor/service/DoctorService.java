@@ -25,13 +25,9 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final UserService userService;
 
-    @Transactional
-    public Doctor createDoctorProfile(User user) {
-        Doctor doctor = Doctor.builder()
-            .user(user)
-            .isActive(true)
-            .build();
-        return doctorRepository.save(doctor);
+    public Doctor getDoctorByUserId(Long userId) {
+        return doctorRepository.findByUserId(userId)
+            .orElseThrow(() -> new ApiException("Doctor not found", HttpStatus.NOT_FOUND));
     }
 
     public DoctorProfileResponse getDoctorProfile(Long userId) {
@@ -62,11 +58,10 @@ public class DoctorService {
     public DoctorProfileResponse addQualification(Long userId, QualificationRequest request) {
         Doctor doctor = getDoctorByUserId(userId);
         
-        Qualification qualification = Qualification.builder()
-            .degree(request.getDegree())
-            .institution(request.getInstitution())
-            .year(request.getYear())
-            .build();
+        Qualification qualification = new Qualification();
+        qualification.setDegree(request.getDegree());
+        qualification.setInstitution(request.getInstitution());
+        qualification.setYear(request.getYear());
         
         doctor.getQualifications().add(qualification);
         Doctor updated = doctorRepository.save(doctor);
@@ -77,12 +72,11 @@ public class DoctorService {
     public DoctorProfileResponse addExperience(Long userId, ExperienceRequest request) {
         Doctor doctor = getDoctorByUserId(userId);
         
-        Experience experience = Experience.builder()
-            .position(request.getPosition())
-            .hospital(request.getHospital())
-            .startDate(request.getStartDate())
-            .endDate(request.getEndDate())
-            .build();
+        Experience experience = new Experience();
+        experience.setPosition(request.getPosition());
+        experience.setHospital(request.getHospital());
+        experience.setStartDate(request.getStartDate());
+        experience.setEndDate(request.getEndDate());
         
         doctor.getExperiences().add(experience);
         Doctor updated = doctorRepository.save(doctor);
@@ -111,26 +105,21 @@ public class DoctorService {
         return mapToProfileResponse(updated);
     }
 
-    public Doctor getDoctorByUserId(Long userId) {
-        return doctorRepository.findByUserId(userId)
-            .orElseThrow(() -> new ApiException("Doctor not found", HttpStatus.NOT_FOUND));
-    }
-
     public Doctor getDoctorEntity(Long doctorId) {
         return doctorRepository.findById(doctorId)
             .orElseThrow(() -> new ApiException("Doctor not found", HttpStatus.NOT_FOUND));
     }
 
     private DoctorProfileResponse mapToProfileResponse(Doctor doctor) {
-        return DoctorProfileResponse.builder()
-            .id(doctor.getId())
-            .user(userService.mapToUserResponse(doctor.getUser()))
-            .specialty(doctor.getSpecialty())
-            .licenseNumber(doctor.getLicenseNumber())
-            .isActive(doctor.isActive())
-            .qualifications(doctor.getQualifications())
-            .experiences(doctor.getExperiences())
-            .schedule(doctor.getSchedule())
-            .build();
+        DoctorProfileResponse response = new DoctorProfileResponse();
+        response.setId(doctor.getId());
+        response.setUser(userService.mapToUserResponse(doctor.getUser()));
+        response.setSpecialty(doctor.getSpecialty());
+        response.setLicenseNumber(doctor.getLicenseNumber());
+        response.setActive(doctor.isActive());
+        response.setQualifications(doctor.getQualifications());
+        response.setExperiences(doctor.getExperiences());
+        response.setSchedule(doctor.getSchedule());
+        return response;
     }
 }

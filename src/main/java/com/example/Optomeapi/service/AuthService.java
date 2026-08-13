@@ -32,23 +32,22 @@ public class AuthService {
             throw new ApiException("Email already registered", HttpStatus.CONFLICT);
         }
 
-        User user = User.builder()
-            .email(request.getEmail())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .firstName(request.getFirstName())
-            .lastName(request.getLastName())
-            .phone(request.getPhone())
-            .role(request.getRole())
-            .isActive(true)
-            .build();
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setPhone(request.getPhone());
+        user.setRole(request.getRole());
+        user.setActive(true);
 
         User savedUser = userRepository.save(user);
         String token = tokenProvider.generateToken(savedUser.getEmail(), savedUser.getRole().name());
 
-        return AuthResponse.builder()
-            .token(token)
-            .user(mapToUserResponse(savedUser))
-            .build();
+        AuthResponse response = new AuthResponse();
+        response.setToken(token);
+        response.setUser(mapToUserResponse(savedUser));
+        return response;
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -65,10 +64,10 @@ public class AuthService {
 
         String token = tokenProvider.generateToken(user.getEmail(), user.getRole().name());
 
-        return AuthResponse.builder()
-            .token(token)
-            .user(mapToUserResponse(user))
-            .build();
+        AuthResponse response = new AuthResponse();
+        response.setToken(token);
+        response.setUser(mapToUserResponse(user));
+        return response;
     }
 
     public UserResponse getCurrentUser(String email) {
@@ -78,15 +77,15 @@ public class AuthService {
     }
 
     private UserResponse mapToUserResponse(User user) {
-        return UserResponse.builder()
-            .id(user.getId())
-            .email(user.getEmail())
-            .firstName(user.getFirstName())
-            .lastName(user.getLastName())
-            .phone(user.getPhone())
-            .role(user.getRole())
-            .isActive(user.isActive())
-            .createdAt(user.getCreatedAt())
-            .build();
+        UserResponse response = new UserResponse();
+        response.setId(user.getId());
+        response.setEmail(user.getEmail());
+        response.setFirstName(user.getFirstName());
+        response.setLastName(user.getLastName());
+        response.setPhone(user.getPhone());
+        response.setRole(user.getRole());
+        response.setActive(user.isActive());
+        response.setCreatedAt(user.getCreatedAt());
+        return response;
     }
 }

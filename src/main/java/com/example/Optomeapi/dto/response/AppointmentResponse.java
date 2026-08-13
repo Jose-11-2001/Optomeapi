@@ -1,15 +1,19 @@
 package com.example.Optomeapi.dto.response;
 
 import com.example.Optomeapi.enums.AppointmentStatus;
-import lombok.Builder;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@Data
-@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AppointmentResponse {
     private Long id;
     private Long patientId;

@@ -2,9 +2,6 @@ package com.example.Optomeapi.entity;
 
 import com.example.Optomeapi.enums.AppointmentStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,9 +12,6 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "appointments")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Appointment {
 
@@ -25,11 +19,11 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
+    private Patient patient; 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
@@ -44,7 +38,6 @@ public class Appointment {
     private AppointmentStatus status;
 
     private String reason;
-
     private String notes;
 
     @CreatedDate
@@ -54,7 +47,9 @@ public class Appointment {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    // GETTERS
+    public Appointment() {}
+
+    // Getters
     public Long getId() { return id; }
     public Patient getPatient() { return patient; }
     public Doctor getDoctor() { return doctor; }
@@ -66,7 +61,7 @@ public class Appointment {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
-    // SETTERS
+    // Setters
     public void setId(Long id) { this.id = id; }
     public void setPatient(Patient patient) { this.patient = patient; }
     public void setDoctor(Doctor doctor) { this.doctor = doctor; }

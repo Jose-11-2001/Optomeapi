@@ -49,7 +49,7 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
         
-        <!-- OpenAPI/Swagger -->
+        <!-- ✅ OpenAPI/Swagger - Already Present -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -121,7 +121,7 @@
                 </configuration>
             </plugin>
             
-            <!-- ✅ CRITICAL: Lombok Annotation Processor -->
+            <!-- ✅ Lombok Annotation Processor -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

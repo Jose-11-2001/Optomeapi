@@ -2,9 +2,6 @@ package com.example.Optomeapi.entity;
 
 import com.example.Optomeapi.enums.NotificationType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -12,9 +9,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notifications")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Notification {
 
@@ -30,17 +24,17 @@ public class Notification {
     private NotificationType type;
 
     private String title;
-
-    @Column(length = 1000)
     private String message;
-
     private boolean isRead = false;
 
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    // GETTERS
+    // === CONSTRUCTORS ===
+    public Notification() {}
+
+    // === GETTERS ===
     public Long getId() { return id; }
     public User getUser() { return user; }
     public NotificationType getType() { return type; }
@@ -49,7 +43,7 @@ public class Notification {
     public boolean isRead() { return isRead; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 
-    // SETTERS
+    // === SETTERS ===
     public void setId(Long id) { this.id = id; }
     public void setUser(User user) { this.user = user; }
     public void setType(NotificationType type) { this.type = type; }

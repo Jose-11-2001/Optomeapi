@@ -2,9 +2,8 @@ package com.example.Optomeapi.entity;
 
 import com.example.Optomeapi.enums.Severity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,9 +14,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "symptom_reports")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 public class SymptomReport {
 
@@ -25,9 +23,9 @@ public class SymptomReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
+    private Patient patient;  // ✅ ADD THIS FIELD
 
     @ElementCollection
     private List<String> symptoms = new ArrayList<>();
@@ -36,9 +34,7 @@ public class SymptomReport {
     private Severity severity;
 
     private String duration;
-
     private String status;
-
     private String notes;
 
     @CreatedDate
@@ -48,7 +44,9 @@ public class SymptomReport {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    // GETTERS
+    public SymptomReport() {}
+
+    // Getters
     public Long getId() { return id; }
     public Patient getPatient() { return patient; }
     public List<String> getSymptoms() { return symptoms; }
@@ -59,7 +57,7 @@ public class SymptomReport {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
-    // SETTERS
+    // Setters
     public void setId(Long id) { this.id = id; }
     public void setPatient(Patient patient) { this.patient = patient; }
     public void setSymptoms(List<String> symptoms) { this.symptoms = symptoms; }

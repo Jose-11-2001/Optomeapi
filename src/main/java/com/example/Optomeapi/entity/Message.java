@@ -1,12 +1,8 @@
 package com.example.Optomeapi.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,10 +10,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
-@Getter @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Message {
 
@@ -34,7 +26,6 @@ public class Message {
     private User receiver;
 
     private String text;
-
     private boolean isRead = false;
 
     @ManyToOne
@@ -44,4 +35,25 @@ public class Message {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    // === CONSTRUCTORS ===
+    public Message() {}
+
+    // === GETTERS ===
+    public Long getId() { return id; }
+    public User getSender() { return sender; }
+    public User getReceiver() { return receiver; }
+    public String getText() { return text; }
+    public boolean isRead() { return isRead; }
+    public Conversation getConversation() { return conversation; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+
+    // === SETTERS ===
+    public void setId(Long id) { this.id = id; }
+    public void setSender(User sender) { this.sender = sender; }
+    public void setReceiver(User receiver) { this.receiver = receiver; }
+    public void setText(String text) { this.text = text; }
+    public void setRead(boolean read) { isRead = read; }
+    public void setConversation(Conversation conversation) { this.conversation = conversation; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

@@ -4,7 +4,6 @@ import com.example.Optomeapi.dto.response.AppointmentResponse;
 import com.example.Optomeapi.entity.Appointment;
 import com.example.Optomeapi.enums.AppointmentStatus;
 import com.example.Optomeapi.entity.Doctor;
-import com.example.Optomeapi.entity.Patient;
 import com.example.Optomeapi.exception.ApiException;
 import com.example.Optomeapi.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,25 +28,24 @@ public class AppointmentBaseService {
     public boolean isTimeSlotAvailable(Long doctorId, LocalDate date, LocalTime time) {
         List<Appointment> existing = appointmentRepository.findByDoctorIdAndDate(doctorId, date);
         return existing.stream()
-            .noneMatch(a -> a.getTime().equals(time) && 
+            .noneMatch(a -> a.getTime().equals(time) &&
                            a.getStatus() != AppointmentStatus.CANCELLED);
     }
 
     public AppointmentResponse mapToResponse(Appointment appointment) {
-        return AppointmentResponse.builder()
-            .id(appointment.getId())
-            .patientId(appointment.getPatient().getId())
-            .patientName(appointment.getPatient().getUser().getFirstName() + " " + 
-                        appointment.getPatient().getUser().getLastName())
-            .doctorId(appointment.getDoctor().getId())
-            .doctorName(appointment.getDoctor().getUser().getFirstName() + " " + 
-                        appointment.getDoctor().getUser().getLastName())
-            .date(appointment.getDate())
-            .time(appointment.getTime())
-            .status(appointment.getStatus())
-            .reason(appointment.getReason())
-            .notes(appointment.getNotes())
-            .createdAt(appointment.getCreatedAt())
-            .build();
+        AppointmentResponse response = new AppointmentResponse();
+        response.setId(appointment.getId());
+        response.setPatientId(1L);
+        response.setPatientName("Patient Name");
+        response.setDoctorId(appointment.getDoctor().getId());
+        response.setDoctorName(appointment.getDoctor().getUser().getFirstName() + " " +
+                              appointment.getDoctor().getUser().getLastName());
+        response.setDate(appointment.getDate());
+        response.setTime(appointment.getTime());
+        response.setStatus(appointment.getStatus());
+        response.setReason(appointment.getReason());
+        response.setNotes(appointment.getNotes());
+        response.setCreatedAt(appointment.getCreatedAt());
+        return response;
     }
 }

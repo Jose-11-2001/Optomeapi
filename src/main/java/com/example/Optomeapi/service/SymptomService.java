@@ -31,12 +31,11 @@ public class SymptomService {
     }
 
     public SymptomResponse createSymptom(SymptomRequest request) {
-        Symptom symptom = Symptom.builder()
-            .name(request.getName())
-            .description(request.getDescription())
-            .type(request.getType())
-            .commonCauses(request.getCommonCauses())
-            .build();
+        Symptom symptom = new Symptom();
+        symptom.setName(request.getName());
+        symptom.setDescription(request.getDescription());
+        symptom.setType(request.getType());
+        symptom.setCommonCauses(request.getCommonCauses());
         Symptom saved = symptomRepository.save(symptom);
         return mapToResponse(saved);
     }
@@ -59,12 +58,12 @@ public class SymptomService {
     }
 
     private SymptomResponse mapToResponse(Symptom symptom) {
-        return SymptomResponse.builder()
-            .id(symptom.getId())
-            .name(symptom.getName())
-            .description(symptom.getDescription())
-            .type(symptom.getType())
-            .commonCauses(symptom.getCommonCauses())
-            .build();
+        SymptomResponse response = new SymptomResponse();
+        response.setId(symptom.getId());
+        response.setName(symptom.getName());
+        response.setDescription(symptom.getDescription());
+        response.setType(symptom.getType());
+        response.setCommonCauses(symptom.getCommonCauses());
+        return response;
     }
 }

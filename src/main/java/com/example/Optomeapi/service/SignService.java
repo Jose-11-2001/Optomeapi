@@ -31,12 +31,11 @@ public class SignService {
     }
 
     public SignResponse createSign(SignRequest request) {
-        Sign sign = Sign.builder()
-            .name(request.getName())
-            .description(request.getDescription())
-            .category(request.getCategory())
-            .severityIndicator(request.getSeverityIndicator())
-            .build();
+        Sign sign = new Sign();
+        sign.setName(request.getName());
+        sign.setDescription(request.getDescription());
+        sign.setCategory(request.getCategory());
+        sign.setSeverityIndicator(request.getSeverityIndicator());
         Sign saved = signRepository.save(sign);
         return mapToResponse(saved);
     }
@@ -59,12 +58,12 @@ public class SignService {
     }
 
     private SignResponse mapToResponse(Sign sign) {
-        return SignResponse.builder()
-            .id(sign.getId())
-            .name(sign.getName())
-            .description(sign.getDescription())
-            .category(sign.getCategory())
-            .severityIndicator(sign.getSeverityIndicator())
-            .build();
+        SignResponse response = new SignResponse();
+        response.setId(sign.getId());
+        response.setName(sign.getName());
+        response.setDescription(sign.getDescription());
+        response.setCategory(sign.getCategory());
+        response.setSeverityIndicator(sign.getSeverityIndicator());
+        return response;
     }
 }

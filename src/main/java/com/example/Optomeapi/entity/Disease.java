@@ -1,19 +1,12 @@
 package com.example.Optomeapi.entity;
-
 import com.example.Optomeapi.enums.Severity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "diseases")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Disease {
 
     @Id
@@ -51,7 +44,10 @@ public class Disease {
     @ElementCollection
     private List<String> riskFactors = new ArrayList<>();
 
-    // GETTERS
+    // === CONSTRUCTORS ===
+    public Disease() {}
+
+    // === GETTERS ===
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getDescription() { return description; }
@@ -61,7 +57,7 @@ public class Disease {
     public String getTreatment() { return treatment; }
     public List<String> getRiskFactors() { return riskFactors; }
 
-    // SETTERS
+    // === SETTERS ===
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setDescription(String description) { this.description = description; }

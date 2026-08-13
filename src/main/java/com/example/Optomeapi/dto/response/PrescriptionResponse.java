@@ -1,14 +1,18 @@
 package com.example.Optomeapi.dto.response;
 
 import com.example.Optomeapi.entity.Medication;
-import lombok.Builder;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PrescriptionResponse {
     private Long id;
     private Long doctorId;

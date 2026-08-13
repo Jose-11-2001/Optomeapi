@@ -1,10 +1,14 @@
 package com.example.Optomeapi.communication.dto.response;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class NotificationPreferenceResponse {
     private boolean email;
     private boolean sms;

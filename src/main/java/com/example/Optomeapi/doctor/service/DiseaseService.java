@@ -1,10 +1,10 @@
-package com.example.Optomeapi.service;
+package com.example.Optomeapi.doctor.service;
 
+import com.example.Optomeapi.doctor.dto.request.DiseaseRequest;
+import com.example.Optomeapi.dto.response.DiseaseResponse;
 import com.example.Optomeapi.entity.Disease;
 import com.example.Optomeapi.entity.Sign;
 import com.example.Optomeapi.entity.Symptom;
-import com.example.Optomeapi.doctor.dto.request.DiseaseRequest;
-import com.example.Optomeapi.dto.response.DiseaseResponse;
 import com.example.Optomeapi.exception.ApiException;
 import com.example.Optomeapi.repository.DiseaseRepository;
 import com.example.Optomeapi.repository.SignRepository;
@@ -43,13 +43,12 @@ public class DiseaseService {
             throw new ApiException("Disease already exists", HttpStatus.CONFLICT);
         }
 
-        Disease disease = Disease.builder()
-            .name(request.getName())
-            .description(request.getDescription())
-            .severity(request.getSeverity())
-            .treatment(request.getTreatment())
-            .riskFactors(request.getRiskFactors())
-            .build();
+        Disease disease = new Disease();
+        disease.setName(request.getName());
+        disease.setDescription(request.getDescription());
+        disease.setSeverity(request.getSeverity());
+        disease.setTreatment(request.getTreatment());
+        disease.setRiskFactors(request.getRiskFactors());
 
         if (request.getSymptomIds() != null) {
             List<Symptom> symptoms = symptomRepository.findAllById(request.getSymptomIds());
@@ -104,23 +103,19 @@ public class DiseaseService {
     }
 
     private DiseaseResponse mapToResponse(Disease disease) {
-        return DiseaseResponse.builder()
-            .id(disease.getId())
-            .name(disease.getName())
-            .description(disease.getDescription())
-            .symptoms(disease.getSymptoms().stream()
-                .map(s -> s.getName())
-                .collect(Collectors.toList()))
-            .signs(disease.getSigns().stream()
-                .map(s -> s.getName())
-                .collect(Collectors.toList()))
-            .severity(disease.getSeverity())
-            .treatment(disease.getTreatment())
-            .riskFactors(disease.getRiskFactors())
-            .build();
+        DiseaseResponse response = new DiseaseResponse();
+        response.setId(disease.getId());
+        response.setName(disease.getName());
+        response.setDescription(disease.getDescription());
+        response.setSymptoms(disease.getSymptoms().stream()
+            .map(Symptom::getName)
+            .collect(Collectors.toList()));
+        response.setSigns(disease.getSigns().stream()
+            .map(Sign::getName)
+            .collect(Collectors.toList()));
+        response.setSeverity(disease.getSeverity());
+        response.setTreatment(disease.getTreatment());
+        response.setRiskFactors(disease.getRiskFactors());
+        return response;
     }
 }
-
-// Similar services for SymptomService and SignService
-// optometry-doctor-module/src/main/java/com/optometry/doctor/service/SymptomService.java
-// optometry-doctor-module/src/main/java/com/optometry/doctor/service/SignService.java

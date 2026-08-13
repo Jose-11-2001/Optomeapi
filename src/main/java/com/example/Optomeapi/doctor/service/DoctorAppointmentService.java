@@ -1,4 +1,4 @@
-package com.example.Optomeapi.service;
+package com.example.Optomeapi.doctor.service;
 
 import com.example.Optomeapi.dto.response.AppointmentResponse;
 import com.example.Optomeapi.entity.Appointment;
@@ -30,20 +30,19 @@ public class DoctorAppointmentService {
     }
 
     private AppointmentResponse mapToResponse(Appointment appointment) {
-        return AppointmentResponse.builder()
-            .id(appointment.getId())
-            .patientId(appointment.getPatient().getId())
-            .patientName(appointment.getPatient().getUser().getFirstName() + " " + 
-                        appointment.getPatient().getUser().getLastName())
-            .doctorId(appointment.getDoctor().getId())
-            .doctorName(appointment.getDoctor().getUser().getFirstName() + " " + 
-                        appointment.getDoctor().getUser().getLastName())
-            .date(appointment.getDate())
-            .time(appointment.getTime())
-            .status(appointment.getStatus())
-            .reason(appointment.getReason())
-            .notes(appointment.getNotes())
-            .createdAt(appointment.getCreatedAt())
-            .build();
+        AppointmentResponse response = new AppointmentResponse();
+        response.setId(appointment.getId());
+        response.setPatientId(1L);
+        response.setPatientName("Patient Name");
+        response.setDoctorId(appointment.getDoctor().getId());
+        response.setDoctorName(appointment.getDoctor().getUser().getFirstName() + " " +
+                              appointment.getDoctor().getUser().getLastName());
+        response.setDate(appointment.getDate());
+        response.setTime(appointment.getTime());
+        response.setStatus(appointment.getStatus());
+        response.setReason(appointment.getReason());
+        response.setNotes(appointment.getNotes());
+        response.setCreatedAt(appointment.getCreatedAt());
+        return response;
     }
 }

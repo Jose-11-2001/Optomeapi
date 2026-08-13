@@ -49,24 +49,22 @@ public class AdminService {
             throw new ApiException("License number already exists", HttpStatus.CONFLICT);
         }
 
-        User user = User.builder()
-            .email(request.getEmail())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .firstName(request.getFirstName())
-            .lastName(request.getLastName())
-            .phone(request.getPhone())
-            .role(Role.DOCTOR)
-            .isActive(true)
-            .build();
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setPhone(request.getPhone());
+        user.setRole(Role.DOCTOR);
+        user.setActive(true);
 
         User savedUser = userRepository.save(user);
 
-        Doctor doctor = Doctor.builder()
-            .user(savedUser)
-            .specialty(request.getSpecialty())
-            .licenseNumber(request.getLicenseNumber())
-            .isActive(true)
-            .build();
+        Doctor doctor = new Doctor();
+        doctor.setUser(savedUser);
+        doctor.setSpecialty(request.getSpecialty());
+        doctor.setLicenseNumber(request.getLicenseNumber());
+        doctor.setActive(true);
 
         Doctor savedDoctor = doctorRepository.save(doctor);
         return mapToDoctorResponse(savedUser, savedDoctor);
@@ -134,14 +132,14 @@ public class AdminService {
             .orElseThrow(() -> new ApiException("Doctor not found", HttpStatus.NOT_FOUND));
         
         User user = doctor.getUser();
-        String newPassword = generateRandomPassword();
+        String newPassword = "Temp" + System.currentTimeMillis() + "!";
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         
-        return ResetPasswordResponse.builder()
-            .newPassword(newPassword)
-            .message("Password has been reset successfully")
-            .build();
+        ResetPasswordResponse response = new ResetPasswordResponse();
+        response.setNewPassword(newPassword);
+        response.setMessage("Password has been reset successfully");
+        return response;
     }
 
     @Transactional
@@ -154,18 +152,13 @@ public class AdminService {
         userRepository.save(user);
     }
 
-    private String generateRandomPassword() {
-        // Generate a secure random password
-        return "Temp" + System.currentTimeMillis() + "!";
-    }
-
     private DoctorManagementResponse mapToDoctorResponse(User user, Doctor doctor) {
-        return DoctorManagementResponse.builder()
-            .id(doctor.getId())
-            .user(userService.mapToUserResponse(user))
-            .specialty(doctor.getSpecialty())
-            .licenseNumber(doctor.getLicenseNumber())
-            .isActive(doctor.isActive())
-            .build();
+        DoctorManagementResponse response = new DoctorManagementResponse();
+        response.setId(doctor.getId());
+        response.setUser(userService.mapToUserResponse(user));
+        response.setSpecialty(doctor.getSpecialty());
+        response.setLicenseNumber(doctor.getLicenseNumber());
+        response.setActive(doctor.isActive());
+        return response;
     }
 }

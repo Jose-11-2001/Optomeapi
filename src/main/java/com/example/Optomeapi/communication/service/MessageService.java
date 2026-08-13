@@ -1,9 +1,9 @@
 package com.example.Optomeapi.communication.service;
 
-import com.example.Optomeapi.dto.response.UserResponse;
 import com.example.Optomeapi.communication.dto.request.SendMessageRequest;
 import com.example.Optomeapi.communication.dto.response.ConversationResponse;
 import com.example.Optomeapi.communication.dto.response.MessageResponse;
+import com.example.Optomeapi.dto.response.UserResponse;
 import com.example.Optomeapi.entity.Conversation;
 import com.example.Optomeapi.entity.Message;
 import com.example.Optomeapi.entity.User;
@@ -11,7 +11,6 @@ import com.example.Optomeapi.exception.ApiException;
 import com.example.Optomeapi.repository.ConversationRepository;
 import com.example.Optomeapi.repository.MessageRepository;
 import com.example.Optomeapi.repository.UserRepository;
-import com.example.Optomeapi.communication.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -42,13 +41,11 @@ public class MessageService {
         Conversation conversation = conversationRepository.findById(conversationId)
             .orElseThrow(() -> new ApiException("Conversation not found", HttpStatus.NOT_FOUND));
         
-        // Verify user is part of this conversation
         if (!conversation.getUserOne().getId().equals(userId) &&
             !conversation.getUserTwo().getId().equals(userId)) {
             throw new ApiException("Access denied", HttpStatus.FORBIDDEN);
         }
         
-        // Mark messages as read
         List<Message> unreadMessages = conversation.getMessages().stream()
             .filter(m -> !m.isRead() && m.getReceiver().getId().equals(userId))
             .collect(Collectors.toList());
@@ -67,20 +64,17 @@ public class MessageService {
         User receiver = userRepository.findById(request.getReceiverId())
             .orElseThrow(() -> new ApiException("Receiver not found", HttpStatus.NOT_FOUND));
         
-        // Find or create conversation
         Conversation conversation = findOrCreateConversation(senderId, request.getReceiverId());
         
-        Message message = Message.builder()
-            .sender(sender)
-            .receiver(receiver)
-            .text(request.getText())
-            .isRead(false)
-            .conversation(conversation)
-            .build();
+        Message message = new Message();
+        message.setSender(sender);
+        message.setReceiver(receiver);
+        message.setText(request.getText());
+        message.setRead(false);
+        message.setConversation(conversation);
         
         Message saved = messageRepository.save(message);
         
-        // Send notification to receiver
         notificationService.sendMessageNotification(saved);
         
         return mapToMessageResponse(saved);
@@ -89,13 +83,14 @@ public class MessageService {
     private Conversation findOrCreateConversation(Long userOneId, Long userTwoId) {
         return conversationRepository.findByUserOneIdAndUserTwoId(userOneId, userTwoId)
             .orElseGet(() -> {
-                User userOne = userRepository.findById(userOneId).orElseThrow();
-                User userTwo = userRepository.findById(userTwoId).orElseThrow();
+                User userOne = userRepository.findById(userOneId)
+                    .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
+                User userTwo = userRepository.findById(userTwoId)
+                    .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
                 
-                Conversation conversation = Conversation.builder()
-                    .userOne(userOne)
-                    .userTwo(userTwo)
-                    .build();
+                Conversation conversation = new Conversation();
+                conversation.setUserOne(userOne);
+                conversation.setUserTwo(userTwo);
                 
                 return conversationRepository.save(conversation);
             });
@@ -113,34 +108,35 @@ public class MessageService {
         
         Message lastMessage = messages.isEmpty() ? null : messages.get(messages.size() - 1);
         
-        return ConversationResponse.builder()
-            .id(conversation.getId())
-            .participant(mapToUserResponse(participant))
-            .lastMessage(lastMessage != null ? mapToMessageResponse(lastMessage) : null)
-            .unreadCount(unreadCount)
-            .updatedAt(conversation.getUpdatedAt())
-            .build();
+        ConversationResponse response = new ConversationResponse();
+        response.setId(conversation.getId());
+        response.setParticipant(mapToUserResponse(participant));
+        response.setLastMessage(lastMessage != null ? mapToMessageResponse(lastMessage) : null);
+        response.setUnreadCount(unreadCount);
+        response.setUpdatedAt(conversation.getUpdatedAt());
+        return response;
     }
 
     private MessageResponse mapToMessageResponse(Message message) {
-        return MessageResponse.builder()
-            .id(message.getId())
-            .sender(mapToUserResponse(message.getSender()))
-            .text(message.getText())
-            .isRead(message.isRead())
-            .createdAt(message.getCreatedAt())
-            .build();
+        MessageResponse response = new MessageResponse();
+        response.setId(message.getId());
+        response.setSender(mapToUserResponse(message.getSender()));
+        response.setText(message.getText());
+        response.setRead(message.isRead());
+        response.setCreatedAt(message.getCreatedAt());
+        return response;
     }
 
     private UserResponse mapToUserResponse(User user) {
-        return UserResponse.builder()
-            .id(user.getId())
-            .email(user.getEmail())
-            .firstName(user.getFirstName())
-            .lastName(user.getLastName())
-            .phone(user.getPhone())
-            .role(user.getRole())
-            .isActive(user.isActive())
-            .build();
+        UserResponse response = new UserResponse();
+        response.setId(user.getId());
+        response.setEmail(user.getEmail());
+        response.setFirstName(user.getFirstName());
+        response.setLastName(user.getLastName());
+        response.setPhone(user.getPhone());
+        response.setRole(user.getRole());
+        response.setActive(user.isActive());
+        response.setCreatedAt(user.getCreatedAt());
+        return response;
     }
 }
