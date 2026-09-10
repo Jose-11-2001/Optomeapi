@@ -13,7 +13,7 @@ public class Experience {
     private String position;
     private String hospital;
     private String startDate;
-    private String endDate; // null means current
+    private String endDate;
 
     // === CONSTRUCTORS ===
     public Experience() {}

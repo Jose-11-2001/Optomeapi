@@ -25,9 +25,7 @@ public class SymptomReport {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;  // ✅ ADD THIS FIELD
-
-    @ElementCollection
+    private Patient patient;
     private List<String> symptoms = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
