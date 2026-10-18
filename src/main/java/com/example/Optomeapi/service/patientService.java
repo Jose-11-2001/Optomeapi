@@ -65,7 +65,7 @@ public class PatientService {
 
     // --- Helper Mapping Methods ---
 
-    private Patient mapToEntity(PatientRequestDto dto) {
+    private Patient mapToEntity(PatientRequest dto) {
         Patient patient = new Patient();
         patient.setFirstName(dto.getFirstName());
         patient.setLastName(dto.getLastName());
@@ -76,8 +76,8 @@ public class PatientService {
         return patient;
     }
 
-    private PatientResponseDto mapToResponseDto(Patient patient) {
-        return new PatientResponseDto(
+    private PatientResponse mapToResponse(Patient patient) {
+        return new PatientResponse(
                 patient.getId(),
                 patient.getFirstName(),
                 patient.getLastName(),
