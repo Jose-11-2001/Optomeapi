@@ -29,13 +29,13 @@ public class PatientService {
     public PatientResponse getPatientById(Long id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
-        return mapToResponseDto(patient);
+        return mapToResponse(patient);
     }
 
     // Get all patients
-    public List<PatientResponseDto> getAllPatients() {
+    public List<PatientResponse> getAllPatients() {
         return patientRepository.findAll().stream()
-                .map(this::mapToResponseDto)
+                .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
