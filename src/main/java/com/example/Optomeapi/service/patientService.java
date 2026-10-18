@@ -1,7 +1,7 @@
 package com.example.Optomeapi.service;
 
-import com.example.Optomeapi.dto.request.PatientRequestDto;
-import com.example.Optomeapi.dto.response.PatientResponseDto;
+import com.example.Optomeapi.dto.request.PatientRequest;
+import com.example.Optomeapi.dto.response.PatientResponse;
 import com.example.Optomeapi.entity.Patient;
 import com.example.Optomeapi.repository.PatientRepository;
 import org.springframework.stereotype.Service;
@@ -19,40 +19,40 @@ public class PatientService {
     }
 
     // Create a new patient
-    public PatientResponseDto createPatient(PatientRequestDto requestDto) {
-        Patient patient = mapToEntity(requestDto);
+    public PatientResponse createPatient(PatientRequest request) {
+        Patient patient = mapToEntity(request);
         Patient savedPatient = patientRepository.save(patient);
-        return mapToResponseDto(savedPatient);
+        return mapToResponse(savedPatient);
     }
 
     // Get patient by ID
-    public PatientResponseDto getPatientById(Long id) {
+    public PatientResponse getPatientById(Long id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
-        return mapToResponseDto(patient);
+        return mapToResponse(patient);
     }
 
     // Get all patients
-    public List<PatientResponseDto> getAllPatients() {
+    public List<PatientResponse> getAllPatients() {
         return patientRepository.findAll().stream()
-                .map(this::mapToResponseDto)
+                .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
     // Update patient
-    public PatientResponseDto updatePatient(Long id, PatientRequestDto requestDto) {
+    public PatientResponse updatePatient(Long id, PatientRequest request) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
 
-        patient.setFirstName(requestDto.getFirstName());
-        patient.setLastName(requestDto.getLastName());
-        patient.setEmail(requestDto.getEmail());
-        patient.setPhoneNumber(requestDto.getPhoneNumber());
-        patient.setDateOfBirth(requestDto.getDateOfBirth());
-        patient.setGender(requestDto.getGender());
+        patient.setFirstName(request.getFirstName());
+        patient.setLastName(request.getLastName());
+        patient.setEmail(request.getEmail());
+        patient.setPhoneNumber(request.getPhoneNumber());
+        patient.setDateOfBirth(request.getDateOfBirth());
+        patient.setGender(request.getGender());
 
         Patient updatedPatient = patientRepository.save(patient);
-        return mapToResponseDto(updatedPatient);
+        return mapToResponse(updatedPatient);
     }
 
     // Delete patient
@@ -65,7 +65,7 @@ public class PatientService {
 
     // --- Helper Mapping Methods ---
 
-    private Patient mapToEntity(PatientRequestDto dto) {
+    private Patient mapToEntity(PatientRequest dto) {
         Patient patient = new Patient();
         patient.setFirstName(dto.getFirstName());
         patient.setLastName(dto.getLastName());
@@ -76,8 +76,8 @@ public class PatientService {
         return patient;
     }
 
-    private PatientResponseDto mapToResponseDto(Patient patient) {
-        return new PatientResponseDto(
+    private PatientResponse mapToResponse(Patient patient) {
+        return new PatientResponse(
                 patient.getId(),
                 patient.getFirstName(),
                 patient.getLastName(),
