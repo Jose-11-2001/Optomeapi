@@ -12,7 +12,7 @@ public class PatientResponse {
     private LocalDate dateOfBirth;
     private String gender;
 
-    public PatientResponseDto() {
+    public PatientResponse() {
     }
 
     public PatientResponseDto(Long id, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String gender) {
