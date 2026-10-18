@@ -40,13 +40,13 @@ public class PatientService {
     }
 
     // Update patient
-    public PatientResponseDto updatePatient(Long id, PatientRequestDto requestDto) {
+    public PatientResponse updatePatient(Long id, PatientRequest request) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
 
-        patient.setFirstName(requestDto.getFirstName());
-        patient.setLastName(requestDto.getLastName());
-        patient.setEmail(requestDto.getEmail());
+        patient.setFirstName(request.getFirstName());
+        patient.setLastName(request.getLastName());
+        patient.setEmail(request.getEmail());
         patient.setPhoneNumber(requestDto.getPhoneNumber());
         patient.setDateOfBirth(requestDto.getDateOfBirth());
         patient.setGender(requestDto.getGender());
