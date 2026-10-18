@@ -1,7 +1,7 @@
 package com.example.Optomeapi.service;
 
-import com.example.Optomeapi.dto.request.PatientRequestDto;
-import com.example.Optomeapi.dto.response.PatientResponseDto;
+import com.example.Optomeapi.dto.request.PatientRequest;
+import com.example.Optomeapi.dto.response.PatientResponse;
 import com.example.Optomeapi.entity.Patient;
 import com.example.Optomeapi.repository.PatientRepository;
 import org.springframework.stereotype.Service;
