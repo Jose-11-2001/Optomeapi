@@ -19,14 +19,14 @@ public class PatientService {
     }
 
     // Create a new patient
-    public PatientResponseDto createPatient(PatientRequestDto requestDto) {
-        Patient patient = mapToEntity(requestDto);
+    public PatientResponse createPatient(PatientRequest request) {
+        Patient patient = mapToEntity(request);
         Patient savedPatient = patientRepository.save(patient);
         return mapToResponseDto(savedPatient);
     }
 
     // Get patient by ID
-    public PatientResponseDto getPatientById(Long id) {
+    public PatientResponse getPatientById(Long id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
         return mapToResponseDto(patient);
