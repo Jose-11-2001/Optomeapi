@@ -47,9 +47,9 @@ public class PatientService {
         patient.setFirstName(request.getFirstName());
         patient.setLastName(request.getLastName());
         patient.setEmail(request.getEmail());
-        patient.setPhoneNumber(requestDto.getPhoneNumber());
-        patient.setDateOfBirth(requestDto.getDateOfBirth());
-        patient.setGender(requestDto.getGender());
+        patient.setPhoneNumber(request.getPhoneNumber());
+        patient.setDateOfBirth(request.getDateOfBirth());
+        patient.setGender(request.getGender());
 
         Patient updatedPatient = patientRepository.save(patient);
         return mapToResponseDto(updatedPatient);
