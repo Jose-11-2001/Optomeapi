@@ -20,14 +20,14 @@ public class PatientController {
 
     // === PROFILE ENDPOINTS ===
     @GetMapping("/profile")
-    public ResponseEntity<PatientResponseDto> getProfile(@RequestHeader("X-Patient-Id") Long patientId) {
+    public ResponseEntity<PatientResponse> getProfile(@RequestHeader("X-Patient-Id") Long patientId) {
         return ResponseEntity.ok(patientService.getProfile(patientId));
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<PatientResponseDto> updateProfile(
+    public ResponseEntity<PatientResponse> updateProfile(
             @RequestHeader("X-Patient-Id") Long patientId,
-            @RequestBody PatientRequestDto request) {
+            @RequestBody PatientRequest request) {
         return ResponseEntity.ok(patientService.updateProfile(patientId, request));
     }
 
