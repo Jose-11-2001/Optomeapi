@@ -22,7 +22,7 @@ public class PatientService {
     public PatientResponse createPatient(PatientRequest request) {
         Patient patient = mapToEntity(request);
         Patient savedPatient = patientRepository.save(patient);
-        return mapToResponseDto(savedPatient);
+        return mapToResponse(savedPatient);
     }
 
     // Get patient by ID
@@ -52,7 +52,7 @@ public class PatientService {
         patient.setGender(request.getGender());
 
         Patient updatedPatient = patientRepository.save(patient);
-        return mapToResponseDto(updatedPatient);
+        return mapToResponse(updatedPatient);
     }
 
     // Delete patient
