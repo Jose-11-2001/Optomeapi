@@ -1,7 +1,7 @@
 package com.example.Optomeapi.controller;
 
-import com.example.Optomeapi.dto.request.PatientRequestDto;
-import com.example.Optomeapi.dto.response.PatientResponseDto;
+import com.example.Optomeapi.dto.request.PatientRequest;
+import com.example.Optomeapi.dto.response.PatientResponse;
 import com.example.Optomeapi.service.PatientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
