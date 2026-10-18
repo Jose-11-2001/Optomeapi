@@ -2,7 +2,7 @@ package com.example.Optomeapi.dto.response;
 
 import java.time.LocalDate;
 
-public class PatientResponseDto {
+public class PatientResponse {
 
     private Long id;
     private String firstName;

@@ -2,7 +2,7 @@ package com.example.Optomeapi.dto.request;
 
 import java.time.LocalDate;
 
-public class PatientRequestDto {
+public class PatientRequest {
 
     private String firstName;
     private String lastName;
@@ -11,10 +11,10 @@ public class PatientRequestDto {
     private LocalDate dateOfBirth;
     private String gender;
 
-    public PatientRequestDto() {
+    public PatientRequest() {
     }
 
-    public PatientRequestDto(String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String gender) {
+    public PatientRequest(String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
