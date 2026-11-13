@@ -1,7 +1,16 @@
 package com.example.Optomeapi.controller;
 
+import com.example.Optomeapi.dto.request.BookAppointmentRequest;
+import com.example.Optomeapi.dto.request.CreateSymptomReportRequest;
+import com.example.Optomeapi.dto.request.DiagnoseRequest;
 import com.example.Optomeapi.dto.request.PatientRequest;
+import com.example.Optomeapi.dto.request.UpdateSymptomReportRequest;
+import com.example.Optomeapi.dto.response.AppointmentResponse;
+import com.example.Optomeapi.dto.response.DiseaseResponse;
+import com.example.Optomeapi.dto.response.DiagnosisResponse;
 import com.example.Optomeapi.dto.response.PatientResponse;
+import com.example.Optomeapi.dto.response.PrescriptionResponse;
+import com.example.Optomeapi.dto.response.SymptomReportResponse;
 import com.example.Optomeapi.service.PatientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +42,15 @@ public class PatientController {
 
     // === APPOINTMENT ENDPOINTS ===
     @GetMapping("/appointments")
-    public ResponseEntity<List<Object>> getAppointments(@RequestHeader("X-Patient-Id") Long patientId) {
+    public ResponseEntity<List<AppointmentResponse>> getAppointments(
+            @RequestHeader("X-Patient-Id") Long patientId) {
         return ResponseEntity.ok(patientService.getAppointments(patientId));
     }
 
     @PostMapping("/appointments")
-    public ResponseEntity<String> bookAppointment(
+    public ResponseEntity<AppointmentResponse> bookAppointment(
             @RequestHeader("X-Patient-Id") Long patientId,
-            @RequestBody Object request) {
+            @RequestBody BookAppointmentRequest request) {
         return ResponseEntity.ok(patientService.bookAppointment(patientId, request));
     }
 
@@ -50,13 +60,15 @@ public class PatientController {
     }
 
     @PutMapping("/appointments/{id}/cancel")
-    public ResponseEntity<String> cancelAppointment(@PathVariable Long id) {
-        return ResponseEntity.ok(patientService.cancelAppointment(id));
+    public ResponseEntity<Void> cancelAppointment(@PathVariable Long id) {
+        patientService.cancelAppointment(id);
+        return ResponseEntity.noContent().build();
     }
 
     // === PRESCRIPTION ENDPOINTS ===
     @GetMapping("/prescriptions")
-    public ResponseEntity<List<Object>> getPrescriptions(@RequestHeader("X-Patient-Id") Long patientId) {
+    public ResponseEntity<List<PrescriptionResponse>> getPrescriptions(
+            @RequestHeader("X-Patient-Id") Long patientId) {
         return ResponseEntity.ok(patientService.getPrescriptions(patientId));
     }
 
@@ -67,7 +79,7 @@ public class PatientController {
 
     // === DISEASE ENDPOINTS ===
     @GetMapping("/diseases")
-    public ResponseEntity<List<Object>> getDiseases() {
+    public ResponseEntity<List<DiseaseResponse>> getDiseases() {
         return ResponseEntity.ok(patientService.getDiseases());
     }
 
@@ -78,18 +90,20 @@ public class PatientController {
 
     // === AI DIAGNOSIS ENDPOINT ===
     @PostMapping("/diagnose")
-    public ResponseEntity<String> runDiagnose(@RequestBody Object request) {
+    public ResponseEntity<DiagnosisResponse> runDiagnose(@RequestBody DiagnoseRequest request) {
         return ResponseEntity.ok(patientService.runDiagnose(request));
     }
 
     // === SYMPTOM REPORT ENDPOINTS ===
     @GetMapping("/symptom-reports")
-    public ResponseEntity<List<Object>> getSymptomReports(@RequestHeader("X-Patient-Id") Long patientId) {
+    public ResponseEntity<List<SymptomReportResponse>> getSymptomReports(
+            @RequestHeader("X-Patient-Id") Long patientId) {
         return ResponseEntity.ok(patientService.getSymptomReports(patientId));
     }
 
     @PostMapping("/symptom-reports")
-    public ResponseEntity<String> createSymptomReport(@RequestBody Object request) {
+    public ResponseEntity<SymptomReportResponse> createSymptomReport(
+            @RequestBody CreateSymptomReportRequest request) {
         return ResponseEntity.ok(patientService.createSymptomReport(request));
     }
 
@@ -99,12 +113,15 @@ public class PatientController {
     }
 
     @PutMapping("/symptom-reports/{id}")
-    public ResponseEntity<String> updateSymptomReport(@PathVariable Long id, @RequestBody Object request) {
+    public ResponseEntity<SymptomReportResponse> updateSymptomReport(
+            @PathVariable Long id,
+            @RequestBody UpdateSymptomReportRequest request) {
         return ResponseEntity.ok(patientService.updateSymptomReport(id, request));
     }
 
     @DeleteMapping("/symptom-reports/{id}")
-    public ResponseEntity<String> deleteSymptomReport(@PathVariable Long id) {
-        return ResponseEntity.ok(patientService.deleteSymptomReport(id));
+    public ResponseEntity<Void> deleteSymptomReport(@PathVariable Long id) {
+        patientService.deleteSymptomReport(id);
+        return ResponseEntity.noContent().build();
     }
 }
