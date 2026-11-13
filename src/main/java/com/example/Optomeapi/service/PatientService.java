@@ -1,7 +1,16 @@
 package com.example.Optomeapi.service;
 
+import com.example.Optomeapi.dto.request.BookAppointmentRequest;
+import com.example.Optomeapi.dto.request.CreateSymptomReportRequest;
+import com.example.Optomeapi.dto.request.DiagnoseRequest;
 import com.example.Optomeapi.dto.request.PatientRequest;
+import com.example.Optomeapi.dto.request.UpdateSymptomReportRequest;
+import com.example.Optomeapi.dto.response.AppointmentResponse;
+import com.example.Optomeapi.dto.response.DiseaseResponse;
+import com.example.Optomeapi.dto.response.DiagnosisResponse;
 import com.example.Optomeapi.dto.response.PatientResponse;
+import com.example.Optomeapi.dto.response.PrescriptionResponse;
+import com.example.Optomeapi.dto.response.SymptomReportResponse;
 import com.example.Optomeapi.entity.Patient;
 import com.example.Optomeapi.repository.PatientRepository;
 import org.springframework.stereotype.Service;
@@ -18,7 +27,7 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
-    // ---- existing CRUD ----
+    // ---- CRUD ----
     public PatientResponse createPatient(PatientRequest request) {
         Patient patient = mapToEntity(request);
         return mapToResponse(patientRepository.save(patient));
@@ -52,7 +61,7 @@ public class PatientService {
         patientRepository.deleteById(id);
     }
 
-    // ---- aliases used by PatientController ----
+    // ---- profile aliases ----
     public PatientResponse getProfile(Long patientId) {
         return getPatientById(patientId);
     }
@@ -61,20 +70,46 @@ public class PatientService {
         return updatePatient(patientId, request);
     }
 
-    // ---- stubs kept because their DTOs exist in the project ----
-
-    public List<com.example.Optomeapi.dto.response.AppointmentResponse> getAppointments(Long patientId) {
-        // TODO: fetch from AppointmentRepository by patientId and map
+    // ---- appointments ----
+    public List<AppointmentResponse> getAppointments(Long patientId) {
         return List.of();
+    }
+
+    public AppointmentResponse bookAppointment(Long patientId, BookAppointmentRequest request) {
+        return null;
     }
 
     public void cancelAppointment(Long appointmentId) {
-        // TODO: mark appointment cancelled
     }
 
-    public List<com.example.Optomeapi.dto.response.PrescriptionResponse> getPrescriptions(Long patientId) {
-        // TODO: fetch from PrescriptionRepository by patientId
+    // ---- prescriptions ----
+    public List<PrescriptionResponse> getPrescriptions(Long patientId) {
         return List.of();
+    }
+
+    // ---- diseases / diagnosis ----
+    public List<DiseaseResponse> getDiseases() {
+        return List.of();
+    }
+
+    public DiagnosisResponse runDiagnose(DiagnoseRequest request) {
+        return null;
+    }
+
+    // ---- symptom reports ----
+    public List<SymptomReportResponse> getSymptomReports(Long patientId) {
+        return List.of();
+    }
+
+    public SymptomReportResponse createSymptomReport(CreateSymptomReportRequest request) {
+        return null;
+    }
+
+    public SymptomReportResponse updateSymptomReport(Long reportId, UpdateSymptomReportRequest request) {
+        return null;
+    }
+
+    public void deleteSymptomReport(Long reportId) {
     }
 
     // ---- helpers ----

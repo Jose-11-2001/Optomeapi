@@ -1,4 +1,4 @@
-package com.example.Optomeapi.service;
+package com.example.Optomeapi.controller;
 
 import com.example.Optomeapi.dto.request.BookAppointmentRequest;
 import com.example.Optomeapi.dto.request.CreateSymptomReportRequest;
@@ -11,142 +11,111 @@ import com.example.Optomeapi.dto.response.DiagnosisResponse;
 import com.example.Optomeapi.dto.response.PatientResponse;
 import com.example.Optomeapi.dto.response.PrescriptionResponse;
 import com.example.Optomeapi.dto.response.SymptomReportResponse;
-import com.example.Optomeapi.entity.Patient;
-import com.example.Optomeapi.repository.PatientRepository;
-import org.springframework.stereotype.Service;
+import com.example.Optomeapi.service.PatientService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-public class PatientService {
+@RestController
+@RequestMapping("/patient")
+public class PatientController {
 
-    private final PatientRepository patientRepository;
+    private final PatientService patientService;
 
-    public PatientService(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
     }
 
-    // ---- CRUD ----
-    public PatientResponse createPatient(PatientRequest request) {
-        Patient patient = mapToEntity(request);
-        return mapToResponse(patientRepository.save(patient));
+    @GetMapping("/profile")
+    public ResponseEntity<PatientResponse> getProfile(@RequestHeader("X-Patient-Id") Long patientId) {
+        return ResponseEntity.ok(patientService.getProfile(patientId));
     }
 
-    public PatientResponse getPatientById(Long id) {
-        return mapToResponse(findPatient(id));
+    @PutMapping("/profile")
+    public ResponseEntity<PatientResponse> updateProfile(
+            @RequestHeader("X-Patient-Id") Long patientId,
+            @RequestBody PatientRequest request) {
+        return ResponseEntity.ok(patientService.updateProfile(patientId, request));
     }
 
-    public List<PatientResponse> getAllPatients() {
-        return patientRepository.findAll().stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+    @GetMapping("/appointments")
+    public ResponseEntity<List<AppointmentResponse>> getAppointments(
+            @RequestHeader("X-Patient-Id") Long patientId) {
+        return ResponseEntity.ok(patientService.getAppointments(patientId));
     }
 
-    public PatientResponse updatePatient(Long id, PatientRequest request) {
-        Patient patient = findPatient(id);
-        patient.setFirstName(request.getFirstName());
-        patient.setLastName(request.getLastName());
-        patient.setEmail(request.getEmail());
-        patient.setPhoneNumber(request.getPhoneNumber());
-        patient.setDateOfBirth(request.getDateOfBirth());
-        patient.setGender(request.getGender());
-        return mapToResponse(patientRepository.save(patient));
+    @PostMapping("/appointments")
+    public ResponseEntity<AppointmentResponse> bookAppointment(
+            @RequestHeader("X-Patient-Id") Long patientId,
+            @RequestBody BookAppointmentRequest request) {
+        return ResponseEntity.ok(patientService.bookAppointment(patientId, request));
     }
 
-    public void deletePatient(Long id) {
-        if (!patientRepository.existsById(id)) {
-            throw new RuntimeException("Patient not found with id: " + id);
-        }
-        patientRepository.deleteById(id);
+    @GetMapping("/appointments/{id}")
+    public ResponseEntity<String> getAppointmentDetails(@PathVariable Long id) {
+        return ResponseEntity.ok("Appointment details for ID: " + id);
     }
 
-    // ---- profile aliases ----
-    public PatientResponse getProfile(Long patientId) {
-        return getPatientById(patientId);
+    @PutMapping("/appointments/{id}/cancel")
+    public ResponseEntity<Void> cancelAppointment(@PathVariable Long id) {
+        patientService.cancelAppointment(id);
+        return ResponseEntity.noContent().build();
     }
 
-    public PatientResponse updateProfile(Long patientId, PatientRequest request) {
-        return updatePatient(patientId, request);
+    @GetMapping("/prescriptions")
+    public ResponseEntity<List<PrescriptionResponse>> getPrescriptions(
+            @RequestHeader("X-Patient-Id") Long patientId) {
+        return ResponseEntity.ok(patientService.getPrescriptions(patientId));
     }
 
-    // ---- appointments ----
-    public List<AppointmentResponse> getAppointments(Long patientId) {
-        // TODO: fetch from AppointmentRepository by patientId and map
-        return List.of();
+    @GetMapping("/prescriptions/{id}")
+    public ResponseEntity<String> getPrescriptionDetails(@PathVariable Long id) {
+        return ResponseEntity.ok("Prescription details for ID: " + id);
     }
 
-    public AppointmentResponse bookAppointment(Long patientId, BookAppointmentRequest request) {
-        // TODO: create Appointment, save, map to response
-        return null;
+    @GetMapping("/diseases")
+    public ResponseEntity<List<DiseaseResponse>> getDiseases() {
+        return ResponseEntity.ok(patientService.getDiseases());
     }
 
-    public void cancelAppointment(Long appointmentId) {
-        // TODO: mark appointment cancelled
+    @GetMapping("/diseases/{id}")
+    public ResponseEntity<String> getDiseaseDetails(@PathVariable Long id) {
+        return ResponseEntity.ok("Disease details for ID: " + id);
     }
 
-    // ---- prescriptions ----
-    public List<PrescriptionResponse> getPrescriptions(Long patientId) {
-        // TODO: fetch from PrescriptionRepository by patientId
-        return List.of();
+    @PostMapping("/diagnose")
+    public ResponseEntity<DiagnosisResponse> runDiagnose(@RequestBody DiagnoseRequest request) {
+        return ResponseEntity.ok(patientService.runDiagnose(request));
     }
 
-    // ---- diseases / diagnosis ----
-    public List<DiseaseResponse> getDiseases() {
-        // TODO: fetch from DiseaseRepository
-        return List.of();
+    @GetMapping("/symptom-reports")
+    public ResponseEntity<List<SymptomReportResponse>> getSymptomReports(
+            @RequestHeader("X-Patient-Id") Long patientId) {
+        return ResponseEntity.ok(patientService.getSymptomReports(patientId));
     }
 
-    public DiagnosisResponse runDiagnose(DiagnoseRequest request) {
-        // TODO: run diagnosis logic
-        return null;
+    @PostMapping("/symptom-reports")
+    public ResponseEntity<SymptomReportResponse> createSymptomReport(
+            @RequestBody CreateSymptomReportRequest request) {
+        return ResponseEntity.ok(patientService.createSymptomReport(request));
     }
 
-    // ---- symptom reports ----
-    public List<SymptomReportResponse> getSymptomReports(Long patientId) {
-        // TODO
-        return List.of();
+    @GetMapping("/symptom-reports/{id}")
+    public ResponseEntity<String> getSymptomReportDetails(@PathVariable Long id) {
+        return ResponseEntity.ok("Symptom report details for ID: " + id);
     }
 
-    public SymptomReportResponse createSymptomReport(CreateSymptomReportRequest request) {
-        // TODO
-        return null;
+    @PutMapping("/symptom-reports/{id}")
+    public ResponseEntity<SymptomReportResponse> updateSymptomReport(
+            @PathVariable Long id,
+            @RequestBody UpdateSymptomReportRequest request) {
+        return ResponseEntity.ok(patientService.updateSymptomReport(id, request));
     }
 
-    public SymptomReportResponse updateSymptomReport(Long reportId, UpdateSymptomReportRequest request) {
-        // TODO
-        return null;
-    }
-
-    public void deleteSymptomReport(Long reportId) {
-        // TODO
-    }
-
-    // ---- helpers ----
-    private Patient findPatient(Long id) {
-        return patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
-    }
-
-    private Patient mapToEntity(PatientRequest dto) {
-        Patient patient = new Patient();
-        patient.setFirstName(dto.getFirstName());
-        patient.setLastName(dto.getLastName());
-        patient.setEmail(dto.getEmail());
-        patient.setPhoneNumber(dto.getPhoneNumber());
-        patient.setDateOfBirth(dto.getDateOfBirth());
-        patient.setGender(dto.getGender());
-        return patient;
-    }
-
-    private PatientResponse mapToResponse(Patient patient) {
-        return new PatientResponse(
-                patient.getId(),
-                patient.getFirstName(),
-                patient.getLastName(),
-                patient.getEmail(),
-                patient.getPhoneNumber(),
-                patient.getDateOfBirth(),
-                patient.getGender());
+    @DeleteMapping("/symptom-reports/{id}")
+    public ResponseEntity<Void> deleteSymptomReport(@PathVariable Long id) {
+        patientService.deleteSymptomReport(id);
+        return ResponseEntity.noContent().build();
     }
 }
