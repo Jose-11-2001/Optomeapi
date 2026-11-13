@@ -18,44 +18,33 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
-    // Create a new patient
+    // ---- existing CRUD ----
     public PatientResponse createPatient(PatientRequest request) {
         Patient patient = mapToEntity(request);
-        Patient savedPatient = patientRepository.save(patient);
-        return mapToResponse(savedPatient);
+        return mapToResponse(patientRepository.save(patient));
     }
 
-    // Get patient by ID
     public PatientResponse getPatientById(Long id) {
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
-        return mapToResponse(patient);
+        return mapToResponse(findPatient(id));
     }
 
-    // Get all patients
     public List<PatientResponse> getAllPatients() {
         return patientRepository.findAll().stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
-    // Update patient
     public PatientResponse updatePatient(Long id, PatientRequest request) {
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
-
+        Patient patient = findPatient(id);
         patient.setFirstName(request.getFirstName());
         patient.setLastName(request.getLastName());
         patient.setEmail(request.getEmail());
         patient.setPhoneNumber(request.getPhoneNumber());
         patient.setDateOfBirth(request.getDateOfBirth());
         patient.setGender(request.getGender());
-
-        Patient updatedPatient = patientRepository.save(patient);
-        return mapToResponse(updatedPatient);
+        return mapToResponse(patientRepository.save(patient));
     }
 
-    // Delete patient
     public void deletePatient(Long id) {
         if (!patientRepository.existsById(id)) {
             throw new RuntimeException("Patient not found with id: " + id);
@@ -63,7 +52,36 @@ public class PatientService {
         patientRepository.deleteById(id);
     }
 
-    // --- Helper Mapping Methods ---
+    // ---- aliases used by PatientController ----
+    public PatientResponse getProfile(Long patientId) {
+        return getPatientById(patientId);
+    }
+
+    public PatientResponse updateProfile(Long patientId, PatientRequest request) {
+        return updatePatient(patientId, request);
+    }
+
+    // ---- stubs kept because their DTOs exist in the project ----
+
+    public List<com.example.Optomeapi.dto.response.AppointmentResponse> getAppointments(Long patientId) {
+        // TODO: fetch from AppointmentRepository by patientId and map
+        return List.of();
+    }
+
+    public void cancelAppointment(Long appointmentId) {
+        // TODO: mark appointment cancelled
+    }
+
+    public List<com.example.Optomeapi.dto.response.PrescriptionResponse> getPrescriptions(Long patientId) {
+        // TODO: fetch from PrescriptionRepository by patientId
+        return List.of();
+    }
+
+    // ---- helpers ----
+    private Patient findPatient(Long id) {
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
+    }
 
     private Patient mapToEntity(PatientRequest dto) {
         Patient patient = new Patient();
@@ -84,7 +102,6 @@ public class PatientService {
                 patient.getEmail(),
                 patient.getPhoneNumber(),
                 patient.getDateOfBirth(),
-                patient.getGender()
-        );
+                patient.getGender());
     }
 }
