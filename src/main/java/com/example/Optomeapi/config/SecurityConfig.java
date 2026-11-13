@@ -29,22 +29,44 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/register", "/api/login").permitAll()
-                .requestMatchers("/api/swagger.json", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                .requestMatchers("/api/patient/**").hasRole("PATIENT")
-                .requestMatchers("/api/doctor/**").hasRole("DOCTOR")
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/notifications/**").authenticated()
-                .requestMatchers("/api/messages/**").authenticated()
-                .requestMatchers("/api/user").authenticated()
-                .requestMatchers("/api/logout").authenticated()
-                .anyRequest().authenticated()
-            );
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(h -> h.frameOptions(f -> f.sameOrigin())) // allow H2 console iframe
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(auth -> auth
+                        // === Public: Swagger / OpenAPI / H2 ===
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/h2-console/**")
+                        .permitAll()
+
+                        // === Public: auth endpoints ===
+                        .requestMatchers(
+                                "/auth/**",
+                                "/api/auth/**",
+                                "/api/register",
+                                "/api/login")
+                        .permitAll()
+
+                        // === Role-based endpoints — BOTH path styles ===
+                        .requestMatchers("/patient/**", "/api/patient/**").hasAnyRole("PATIENT", "ADMIN")
+                        .requestMatchers("/doctor/**", "/api/doctor/**").hasAnyRole("DOCTOR", "ADMIN")
+                        .requestMatchers("/admin/**", "/api/admin/**").hasRole("ADMIN")
+
+                        // === Authenticated only ===
+                        .requestMatchers("/messages/**", "/api/messages/**").authenticated()
+                        .requestMatchers("/notifications/**", "/api/notifications/**").authenticated()
+                        .requestMatchers("/user", "/api/user").authenticated()
+                        .requestMatchers("/logout", "/api/logout").authenticated()
+
+                        // === Everything else ===
+                        .anyRequest().authenticated());
 
         return http.build();
     }
