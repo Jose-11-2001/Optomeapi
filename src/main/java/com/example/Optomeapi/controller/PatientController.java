@@ -28,7 +28,9 @@ public class PatientController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<PatientResponse> getProfile(@RequestHeader("X-Patient-Id") Long patientId) {
+    public ResponseEntity<PatientResponse> getProfile(Authentication authentication) {
+        String email = authentication.getName();
+        Long patientId = patientService.findIdByUserEmail(email);
         return ResponseEntity.ok(patientService.getProfile(patientId));
     }
 
