@@ -70,6 +70,14 @@ public class PatientService {
         return updatePatient(patientId, request);
     }
 
+    // ---- JWT -> patient id resolution ----
+    public Long findIdByUserEmail(String email) {
+        return patientRepository.findByUser_Email(email)
+                .orElseThrow(() -> new RuntimeException(
+                        "Patient profile not found for user: " + email))
+                .getId();
+    }
+
     // ---- appointments ----
     public List<AppointmentResponse> getAppointments(Long patientId) {
         return List.of();
@@ -107,12 +115,6 @@ public class PatientService {
 
     public SymptomReportResponse updateSymptomReport(Long reportId, UpdateSymptomReportRequest request) {
         return null;
-    }
-
-    public Long findIdByUserEmail(String email) {
-        return patientRepository.findByUserEmail(email)
-                .orElseThrow(() -> new RuntimeException("Patient profile not found"))
-                .getId();
     }
 
     public void deleteSymptomReport(Long reportId) {

@@ -13,6 +13,7 @@ import com.example.Optomeapi.dto.response.PrescriptionResponse;
 import com.example.Optomeapi.dto.response.SymptomReportResponse;
 import com.example.Optomeapi.service.PatientService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,31 +28,36 @@ public class PatientController {
         this.patientService = patientService;
     }
 
+    private Long currentPatientId(Authentication auth) {
+        return patientService.findIdByUserEmail(auth.getName());
+    }
+
+    // ---------- profile ----------
     @GetMapping("/profile")
-    public ResponseEntity<PatientResponse> getProfile(Authentication authentication) {
-        String email = authentication.getName();
-        Long patientId = patientService.findIdByUserEmail(email);
-        return ResponseEntity.ok(patientService.getProfile(patientId));
+    public ResponseEntity<PatientResponse> getProfile(Authentication auth) {
+        return ResponseEntity.ok(patientService.getProfile(currentPatientId(auth)));
     }
 
     @PutMapping("/profile")
     public ResponseEntity<PatientResponse> updateProfile(
-            @RequestHeader("X-Patient-Id") Long patientId,
+            Authentication auth,
             @RequestBody PatientRequest request) {
-        return ResponseEntity.ok(patientService.updateProfile(patientId, request));
+        return ResponseEntity.ok(
+                patientService.updateProfile(currentPatientId(auth), request));
     }
 
+    // ---------- appointments ----------
     @GetMapping("/appointments")
-    public ResponseEntity<List<AppointmentResponse>> getAppointments(
-            @RequestHeader("X-Patient-Id") Long patientId) {
-        return ResponseEntity.ok(patientService.getAppointments(patientId));
+    public ResponseEntity<List<AppointmentResponse>> getAppointments(Authentication auth) {
+        return ResponseEntity.ok(patientService.getAppointments(currentPatientId(auth)));
     }
 
     @PostMapping("/appointments")
     public ResponseEntity<AppointmentResponse> bookAppointment(
-            @RequestHeader("X-Patient-Id") Long patientId,
+            Authentication auth,
             @RequestBody BookAppointmentRequest request) {
-        return ResponseEntity.ok(patientService.bookAppointment(patientId, request));
+        return ResponseEntity.ok(
+                patientService.bookAppointment(currentPatientId(auth), request));
     }
 
     @GetMapping("/appointments/{id}")
@@ -65,10 +71,10 @@ public class PatientController {
         return ResponseEntity.noContent().build();
     }
 
+    // ---------- prescriptions ----------
     @GetMapping("/prescriptions")
-    public ResponseEntity<List<PrescriptionResponse>> getPrescriptions(
-            @RequestHeader("X-Patient-Id") Long patientId) {
-        return ResponseEntity.ok(patientService.getPrescriptions(patientId));
+    public ResponseEntity<List<PrescriptionResponse>> getPrescriptions(Authentication auth) {
+        return ResponseEntity.ok(patientService.getPrescriptions(currentPatientId(auth)));
     }
 
     @GetMapping("/prescriptions/{id}")
@@ -76,6 +82,7 @@ public class PatientController {
         return ResponseEntity.ok("Prescription details for ID: " + id);
     }
 
+    // ---------- diseases ----------
     @GetMapping("/diseases")
     public ResponseEntity<List<DiseaseResponse>> getDiseases() {
         return ResponseEntity.ok(patientService.getDiseases());
@@ -86,15 +93,16 @@ public class PatientController {
         return ResponseEntity.ok("Disease details for ID: " + id);
     }
 
+    // ---------- diagnose ----------
     @PostMapping("/diagnose")
     public ResponseEntity<DiagnosisResponse> runDiagnose(@RequestBody DiagnoseRequest request) {
         return ResponseEntity.ok(patientService.runDiagnose(request));
     }
 
+    // ---------- symptom reports ----------
     @GetMapping("/symptom-reports")
-    public ResponseEntity<List<SymptomReportResponse>> getSymptomReports(
-            @RequestHeader("X-Patient-Id") Long patientId) {
-        return ResponseEntity.ok(patientService.getSymptomReports(patientId));
+    public ResponseEntity<List<SymptomReportResponse>> getSymptomReports(Authentication auth) {
+        return ResponseEntity.ok(patientService.getSymptomReports(currentPatientId(auth)));
     }
 
     @PostMapping("/symptom-reports")
