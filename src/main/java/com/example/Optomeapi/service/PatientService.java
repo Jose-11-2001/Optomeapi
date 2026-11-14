@@ -109,6 +109,12 @@ public class PatientService {
         return null;
     }
 
+    public Long findIdByUserEmail(String email) {
+        return patientRepository.findByUserEmail(email)
+                .orElseThrow(() -> new RuntimeException("Patient profile not found"))
+                .getId();
+    }
+
     public void deleteSymptomReport(Long reportId) {
     }
 
