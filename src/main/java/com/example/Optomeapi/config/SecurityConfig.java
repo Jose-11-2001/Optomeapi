@@ -38,6 +38,7 @@ public class SecurityConfig {
                         // === Public: Swagger / OpenAPI / H2 ===
                         .requestMatchers(
                                 "/v3/api-docs/**",
+                                "/v3/api-docs",
                                 "/v3/api-docs.yaml",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
